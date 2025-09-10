@@ -15,6 +15,33 @@
 // export default router;
 
 
+// import express from "express";
+// import authUser from "../middlewares/authUser.js";
+// import { authSeller } from "../middlewares/authSeller.js";
+// import {
+//   getAllOrders,
+//   getUserOrders,
+//   placeOrderCOD,
+//   cancelOrder, // ✅ Import cancelOrder controller
+// } from "../controller/order.controller.js";
+
+// const router = express.Router();
+
+// // Place order (COD)
+// router.post("/cod", authUser, placeOrderCOD);
+
+// // Get logged-in user's orders
+// router.get("/user", authUser, getUserOrders);
+
+// // Get all seller orders
+// router.get("/seller", authSeller, getAllOrders);
+
+// // Cancel order by user
+// router.put("/cancel/:orderId", authUser, cancelOrder); // ✅ New route
+
+// export default router;
+
+
 import express from "express";
 import authUser from "../middlewares/authUser.js";
 import { authSeller } from "../middlewares/authSeller.js";
@@ -22,21 +49,18 @@ import {
   getAllOrders,
   getUserOrders,
   placeOrderCOD,
-  cancelOrder, // ✅ Import cancelOrder controller
+  cancelOrder,
 } from "../controller/order.controller.js";
 
 const router = express.Router();
 
-// Place order (COD)
+// User routes
 router.post("/cod", authUser, placeOrderCOD);
-
-// Get logged-in user's orders
 router.get("/user", authUser, getUserOrders);
+router.put("/cancel/:orderId", authUser, cancelOrder);
 
-// Get all seller orders
+// Seller routes
 router.get("/seller", authSeller, getAllOrders);
-
-// Cancel order by user
-router.put("/cancel/:orderId", authUser, cancelOrder); // ✅ New route
+router.delete("/cancel/:orderId", authSeller, cancelOrder);
 
 export default router;
