@@ -93,77 +93,12 @@
 // });
 
 
-// import express from "express";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
-// import dotenv from "dotenv";
-// import { connectDB } from "./config/connectDB.js";
-// dotenv.config();
-
-// import userRoutes from "./routes/user.routes.js";
-// import sellerRoutes from "./routes/seller.routes.js";
-// import productRoutes from "./routes/product.routes.js";
-// import cartRoutes from "./routes/cart.routes.js";
-// import addressRoutes from "./routes/address.routes.js";
-// import orderRoutes from "./routes/order.routes.js";
-
-// import { connectCloudinary } from "./config/cloudinary.js";
-
-// const app = express();
-
-// // Connect to Cloudinary
-// await connectCloudinary();
-
-// // Allowed origins
-// const allowedOrigins = [
-//   "http://localhost:5173", // local frontend
-//   "https://mern-frontend-ruddy-pi.vercel.app", // your production frontend
-// ];
-
-// // ✅ Middleware
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (
-//         !origin ||
-//         allowedOrigins.includes(origin) ||
-//         /\.vercel\.app$/.test(new URL(origin).hostname) // allow any vercel deploy
-//       ) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true, // allow cookies and auth headers
-//   })
-// );
-
-// app.use(cookieParser());
-// app.use(express.json());
-
-// // API routes
-// app.use("/images", express.static("uploads"));
-// app.use("/api/user", userRoutes);
-// app.use("/api/seller", sellerRoutes);
-// app.use("/api/product", productRoutes);
-// app.use("/api/cart", cartRoutes);
-// app.use("/api/address", addressRoutes);
-// app.use("/api/order", orderRoutes);
-
-// // Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   connectDB();
-//   console.log(`✅ Server is running on port ${PORT}`);
-// });
-
-
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./config/connectDB.js";
-import { connectCloudinary } from "./config/cloudinary.js";
+dotenv.config();
 
 import userRoutes from "./routes/user.routes.js";
 import sellerRoutes from "./routes/seller.routes.js";
@@ -172,36 +107,42 @@ import cartRoutes from "./routes/cart.routes.js";
 import addressRoutes from "./routes/address.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 
-dotenv.config();
+import { connectCloudinary } from "./config/cloudinary.js";
+
 const app = express();
 
-// Connect to DB and Cloudinary
-connectDB();
+// Connect to Cloudinary
 await connectCloudinary();
 
 // Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://mern-frontend-ruddy-pi.vercel.app",
+  "http://localhost:5173", // local frontend
+  "https://mern-frontend-ruddy-pi.vercel.app", // your production frontend
 ];
 
-// Middleware
+// ✅ Middleware
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      const allowed = allowedOrigins.some((o) => origin.includes(o));
-      if (allowed) callback(null, true);
-      else callback(new Error("Not allowed by CORS"));
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        /\.vercel\.app$/.test(new URL(origin).hostname) // allow any vercel deploy
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     },
-    credentials: true,
+    credentials: true, // allow cookies and auth headers
   })
 );
+
 app.use(cookieParser());
 app.use(express.json());
-app.use("/images", express.static("uploads"));
 
-// Routes
+// API routes
+app.use("/images", express.static("uploads"));
 app.use("/api/user", userRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/product", productRoutes);
@@ -211,4 +152,7 @@ app.use("/api/order", orderRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  connectDB();
+  console.log(`✅ Server is running on port ${PORT}`);
+});
