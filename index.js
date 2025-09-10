@@ -63,7 +63,7 @@ await connectCloudinary();
 // Allowed origins for CORS
 const allowedOrigins = [
   "http://localhost:5173", // local frontend
-  "https://mern-frontend-bn9qbrhhx-vinay-rajs-projects-b7e91a28.vercel.app", // deployed frontend
+  "https://mern-frontend-ruddy-pi.vercel.app/", // deployed frontend
 ];
 
 // Middleware
