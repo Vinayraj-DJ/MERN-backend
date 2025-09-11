@@ -18,12 +18,12 @@
 // };
 
 
-// middleware/authSeller.js
+// middlewares/authSeller.js
 import jwt from "jsonwebtoken";
 
 export const authSeller = (req, res, next) => {
   try {
-    // ✅ Accept token from cookie OR from Authorization header
+    // ✅ Accept token from cookies OR Authorization header
     const token =
       req.cookies?.sellerToken || req.headers.authorization?.split(" ")[1];
 
@@ -34,12 +34,12 @@ export const authSeller = (req, res, next) => {
     // ✅ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ Optional: restrict to one seller email (only if you want)
+    // ✅ Optional: check if only ONE seller is allowed
     if (process.env.SELLER_EMAIL && decoded.email !== process.env.SELLER_EMAIL) {
       return res.status(403).json({ message: "Forbidden", success: false });
     }
 
-    // ✅ Attach seller info to request
+    // Attach seller info to request (id, email, role, etc.)
     req.seller = decoded;
 
     next();

@@ -27,6 +27,6 @@ router.post("/login", sellerLogin);
 router.get("/is-auth", authSeller, checkAuth);
 
 // Logout (no auth middleware)
-router.post("/logout", sellerLogout);
+router.post("/logout",authSeller, sellerLogout);
 
 export default router;
