@@ -158,87 +158,6 @@
 // });
 
 
-// import express from "express";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
-// import dotenv from "dotenv";
-// import { connectDB } from "./config/connectDB.js";
-// import { connectCloudinary } from "./config/cloudinary.js";
-
-// import userRoutes from "./routes/user.routes.js";
-// import sellerRoutes from "./routes/seller.routes.js";
-// import productRoutes from "./routes/product.routes.js";
-// import cartRoutes from "./routes/cart.routes.js";
-// import addressRoutes from "./routes/address.routes.js";
-// import orderRoutes from "./routes/order.routes.js";
-
-// dotenv.config();
-
-// const app = express();
-
-// // Allowed origins
-// const allowedOrigins = [
-//   "http://localhost:5173", // local frontend
-//   "https://mern-frontend-ruddy-pi.vercel.app", // production frontend
-// ];
-
-// // ✅ Middleware
-// app.use(express.json()); // parse JSON body
-// app.use(cookieParser());  // parse cookies
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (
-//         !origin ||
-//         allowedOrigins.includes(origin) ||
-//         (origin && /\.vercel\.app$/.test(new URL(origin).hostname))
-//       ) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true, // allow cookies
-//   })
-// );
-
-// // Static folder for images
-// app.use("/images", express.static("uploads"));
-
-// // API routes
-// app.use("/api/user", userRoutes);
-// app.use("/api/seller", sellerRoutes);
-// app.use("/api/product", productRoutes);
-// app.use("/api/cart", cartRoutes);
-// app.use("/api/address", addressRoutes);
-// app.use("/api/order", orderRoutes);
-
-// // Start server function
-// const startServer = async () => {
-//   try {
-//     // Connect to DB first
-//     await connectDB();
-//     console.log("✅ Database connected");
-
-//     // Connect to Cloudinary
-//     await connectCloudinary();
-//     console.log("✅ Cloudinary connected");
-
-//     // Start server
-//     const PORT = process.env.PORT || 5000;
-//     app.listen(PORT, () => {
-//       console.log(`✅ Server is running on port ${PORT}`);
-//     });
-//   } catch (error) {
-//     console.error("❌ Error starting server:", error.message);
-//     process.exit(1);
-//   }
-// };
-
-// // Start everything
-// startServer();
-
-
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -257,24 +176,36 @@ dotenv.config();
 
 const app = express();
 
+// Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://mern-frontend-ruddy-pi.vercel.app"
+  "http://localhost:5173", // local frontend
+  "https://mern-frontend-ky5d5z6j0-vinay-rajs-projects-b7e91a28.vercel.app/", // production frontend
 ];
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-    else callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true
-}));
+// ✅ Middleware
+app.use(express.json()); // parse JSON body
+app.use(cookieParser());  // parse cookies
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        (origin && /\.vercel\.app$/.test(new URL(origin).hostname))
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // allow cookies
+  })
+);
 
+// Static folder for images
 app.use("/images", express.static("uploads"));
 
-// Routes
+// API routes
 app.use("/api/user", userRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/product", productRoutes);
@@ -282,19 +213,27 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/order", orderRoutes);
 
+// Start server function
 const startServer = async () => {
   try {
+    // Connect to DB first
     await connectDB();
     console.log("✅ Database connected");
+
+    // Connect to Cloudinary
     await connectCloudinary();
     console.log("✅ Cloudinary connected");
 
+    // Start server
     const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`✅ Server is running on port ${PORT}`);
+    });
   } catch (error) {
     console.error("❌ Error starting server:", error.message);
     process.exit(1);
   }
 };
 
+// Start everything
 startServer();
