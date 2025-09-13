@@ -45,7 +45,7 @@
 
 import express from "express";
 import { authSeller } from "../middlewares/authSeller.js";
-import { addProduct, listProducts, sellerLogin, checkAuth, sellerLogout } from "../controllers/seller.controller.js";
+import { addProduct, listProducts, sellerLogin, checkAuth, sellerLogout } from "../controller/seller.controller.js";
 
 const router = express.Router();
 
