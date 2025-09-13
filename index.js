@@ -179,7 +179,7 @@ const app = express();
 // Allowed origins
 const allowedOrigins = [
   "http://localhost:5173", // local frontend
-  "https://mern-frontend-ruddy-pi.vercel.app", // production frontend
+  "https://mern-frontend-ky5d5z6j0-vinay-rajs-projects-b7e91a28.vercel.app/", // production frontend
 ];
 
 // ✅ Middleware
