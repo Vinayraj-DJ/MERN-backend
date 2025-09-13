@@ -226,7 +226,7 @@ export const getUserOrders = async (req, res) => {
 };
 
 // Get all orders for admin: /api/order/seller
-export const getAllOrders = async (req, res) => {
+export const getSellerOrders = async (req, res) => {
   try {
     const orders = await Order.find({
       $or: [{ paymentType: "COD" }, { isPaid: true }],
