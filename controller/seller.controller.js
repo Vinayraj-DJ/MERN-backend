@@ -46,10 +46,9 @@ export const sellerLogout = async (req, res) => {
   try {
     res.clearCookie("sellerToken", {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: process.env.NODE_ENV === "production" ? "none" : "Strict",
-      secure:true,
-      sameSite:"None"
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "Strict",
+
     });
     return res.status(200).json({
       message: "Logged out successfully",
