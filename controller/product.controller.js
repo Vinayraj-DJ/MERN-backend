@@ -146,7 +146,7 @@ export const getProducts = async (req, res) => {
 // Get single product : /api/product/id
 export const getProductById = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const product = await Product.findById(id);
     res.status(200).json({ success: true, product });
   } catch (error) {

@@ -18,22 +18,49 @@
 // export default authUser;
 
 
+// import jwt from "jsonwebtoken";
+
+// const authUser = (req, res, next) => {
+//   try {
+//     const token = req.cookies.token; // ✅ safer than destructuring
+//     if (!token) {
+//       return res.status(401).json({ message: "Unauthorized", success: false });
+//     }
+
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded.id; // ✅ store user id in request
+//     next();
+//   } catch (error) {
+//     console.error("Error in authUser middleware:", error);
+//     return res.status(401).json({ message: "Invalid token", success: false });
+//   }
+// };
+
+// export default authUser;
+
+
 import jwt from "jsonwebtoken";
 
 const authUser = (req, res, next) => {
   try {
-    const token = req.cookies.token; // ✅ safer than destructuring
+    // ✅ get token from cookie OR Authorization header
+    const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Unauthorized", success: false });
     }
 
+    // ✅ verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id; // ✅ store user id in request
+
+    // ✅ attach userId
+    req.user = decoded.id;
+
     next();
   } catch (error) {
-    console.error("Error in authUser middleware:", error);
+    console.error("authUser error:", error.message);
     return res.status(401).json({ message: "Invalid token", success: false });
   }
 };
 
 export default authUser;
+
