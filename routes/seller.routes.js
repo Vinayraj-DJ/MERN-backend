@@ -32,13 +32,31 @@
 // export default router;
 
 
+// import express from "express";
+// import { authSeller } from "../middlewares/authSeller.js";
+// import { addProduct, listProducts } from "../controller/seller.controller.js";
+
+// const router = express.Router();
+
+// router.post("/add-product", authSeller, addProduct);
+// router.get("/list-products", authSeller, listProducts);
+
+// export default router;
+
 import express from "express";
 import { authSeller } from "../middlewares/authSeller.js";
-import { addProduct, listProducts } from "../controller/seller.controller.js";
+import { addProduct, listProducts, sellerLogin, checkAuth, sellerLogout } from "../controllers/seller.controller.js";
 
 const router = express.Router();
 
+// SELLER AUTH ROUTES
+router.post("/login", sellerLogin);
+router.get("/is-auth", authSeller, checkAuth);
+router.post("/logout", authSeller, sellerLogout);
+
+// PRODUCT ROUTES
 router.post("/add-product", authSeller, addProduct);
 router.get("/list-products", authSeller, listProducts);
 
 export default router;
+
